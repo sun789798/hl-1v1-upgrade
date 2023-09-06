@@ -19,7 +19,7 @@
 | long | dial_time     |  播打时间 | 
 | long | dial_user_id  |   播打用户id | 
 | long | idal_time     |   接听时间 | 
-| long | helo_time     |  接听方进入通话say helo | 
+| long | helo_time     |  接听方进入通话say helo 为0一般做正在连接中等状态显示 | 
 | long | ehlo_time     |  播打放进入通话 回应 | 
 | long | hang_time     |  挂断时间  ing表始终为0 | 
 | long | hang_user_id  |  挂断用户id | 
@@ -139,6 +139,7 @@ JAVA实体类信息
 
 ### API provider
 ### CallService
+
 播打
 1. Call dialWithRtcValue(long hostUserId, long guestUserId, boolean direct, Map<Integer, Long> cmap);
 direct true dialUserId = hostUserId,false guestUserId
@@ -155,6 +156,7 @@ direct true dialUserId = hostUserId,false guestUserId
 7. List<Call> listAll(); 
 接听通话
 8. Call idal(long callId, long userId)
+
 ### 通话流程处理
 
 1. heartbeat api  通话中需根据心跳循环调用，超时未调用会触发hang api
