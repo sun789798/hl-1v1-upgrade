@@ -25,6 +25,7 @@
 | long | hang_user_id  |  挂断用户id | 
 | long | guest_hb_time |  用户心跳时间 | 
 | long | host_hb_time  |   主播心跳时间 |
+| int | cdn_id  |   cdn_id /声网-腾讯 |
  
 ###### host_user_id unique
 ###### guest_user_id unique 
@@ -46,6 +47,7 @@
 | long | hang_user_id  |  挂断用户id              |
 | long | guest_hb_time |  用户心跳时间              |
 | long | host_hb_time  |   主播心跳时间             |
+| int | cdn_id  |   cdn_id /声网-腾讯 |
 
 ###### host_user_id unique
 ###### guest_user_id unique 
@@ -135,7 +137,7 @@ JAVA实体类信息
 
 
 
-API provider
+### API provider
 ### CallService
 播打
 1. Call dialWithRtcValue(long hostUserId, long guestUserId, boolean direct, Map<Integer, Long> cmap);
@@ -149,5 +151,43 @@ direct true dialUserId = hostUserId,false guestUserId
 5. void incrCounts(long callId, Map<Integer, Long> indexAndCount); 更新app_rtc_value数据
 心跳扣费
 6. long ticketByResourceId(long userId, long provideUserId, String resourceId, boolean free); 
+获取所有正在通话
+7. List<Call> listAll(); 
+接听通话
+8. Call idal(long callId, long userId)
+### 通话流程处理
+
+1. heartbeat api  通话中需根据心跳循环调用，超时未调用会触发hang api
+2. 起单线程循环 扫描 app_call_ing guest_hb_time/host_hb_time 超过15s的 List<Call> 做hang通话处理 --心跳超时
+3. 起单线程循环 扫描 app_call_ing dial_time 超过30s的 List<Call> 做hang通话处理   -- 播打超时
+4. 三方rtc，以声网举例 channelName 以CallId生成token
+5. 关于心跳处理，需调用ticketByResourceId，将生成app_trade_ticket表记录，每次拉最后一条记录doneTime 对比 app_trade_server mode=EACH && > periodMills 则进行下次扣费，并生成新的app_trade_ticket记录
+
+
+### 服务端客户端交互
+
+> 用户客户端
+>
+>> 1发起通话 dialWithRtcValue 以callId下发 RTC—TOKEN
+>>
+> 主播客户端
+>>
+>> 2.接听电话 以CallId下发RTC—TOKEN
+>
+>  3.im下发通话建立
+>
+>  4.双方收到通话建立im-发起心跳（可以http/目前im心跳-需确认能否拿到在房间的字段）
+>
+>  异常流程 一方心跳超时 hang结束通话，app_call_ing写入app_call_record记录表，清楚ing记录
+>
+> 
+
+
+
+
+
+
+
+>
 
 
