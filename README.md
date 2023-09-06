@@ -1,5 +1,5 @@
-####1v1通话改版
->表新增
+#### 1v1通话改版
+> 表新增
 
 | 表名 | 备注
 | ---------- | :-----------: |
@@ -10,7 +10,7 @@
 | app_trade_ticket | 通话扣费表
 
 
-##app_call_ing  
+## app_call_ing  
 | 类型      | 字段     |    描述     |   
 | ---------- | :-----------: | :-----------: |   
 | long | call_id       | 自增id | 
@@ -31,7 +31,7 @@
 ###### call_id     pk
 
 
-##app_call_record 
+## app_call_record 
 | 类型      | 字段     |    描述     |                
 | ---------- | :-----------: | :-----------: |  
 | long | call_id       | 自增id                 |
@@ -52,7 +52,7 @@
 ###### call_id     pk
 
 
-##app_rtc_value
+## app_rtc_value
 | 类型      | 字段     |    描述     |                
 | ---------- | :-----------: | :-----------: |  
 | long | rtc_unit_id     | 主键id                                                      |
@@ -66,7 +66,7 @@
 
 
 
-##app_trade_server
+## app_trade_server
 | 类型      | 字段     |    描述     |                
 | ---------- | :-----------: | :-----------: |  
 | long | server_id    | 自增                                    |
@@ -83,7 +83,7 @@
 ###### user_id,resource_id unique
 ###### module_enum, mode_id index
 
-##app_trade_ticket
+## app_trade_ticket
 | 类型      | 字段     |    描述     |                
 | ---------- | :-----------: | :-----------: |  
 | long | ticket_id | 主键id |
@@ -98,8 +98,8 @@
 
 
 JAVA实体类信息
-##Call 
-####(app_call_ing/app_call_record/app_rtc_value)
+## Call 
+#### (app_call_ing/app_call_record/app_rtc_value)
 1. long callId
 2. long hostUserId
 3. long guestUserId
@@ -114,8 +114,8 @@ JAVA实体类信息
 12. long hostHbTime
 13. List<Long> value  --app_rtc_value numb1-9会放这里
 
-##TradeServer
-####(app_trade_server)
+## TradeServer
+#### (app_trade_server)
 1. long serverId
 2. long userId
 3. String resourceId
@@ -125,8 +125,8 @@ JAVA实体类信息
 7. long price
 8. createTime
 
-##TradeTicket
-####(app_trade_ticket)
+## TradeTicket
+#### (app_trade_ticket)
 1. long ticketId
 2. long serverId
 3. String userId
@@ -136,7 +136,7 @@ JAVA实体类信息
 
 
 API provider
-###CallService
+### CallService
 播打
 1. Call dialWithRtcValue(long hostUserId, long guestUserId, boolean direct, Map<Integer, Long> cmap);
 direct true dialUserId = hostUserId,false guestUserId
