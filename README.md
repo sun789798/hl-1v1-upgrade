@@ -153,11 +153,11 @@ direct true dialUserId = hostUserId,false guestUserId
 5. void incrCounts(long callId, Map<Integer, Long> indexAndCount); 更新app_rtc_value数据
 心跳扣费
 6. long ticketByResourceId(long userId, long provideUserId, String resourceId, boolean free); 
-获取所有正在通话
+计费心跳调用
 7. List<Call> listAll(); 
 接听通话
 8. Call idal(long callId, long userId)
-
+9. publishServer(long userId, String resourceId(call-${callId}), moduleEnum.CALL, long periodMills, long price)
 ### 通话流程处理
 
 1. heartbeat api  通话中需根据心跳循环调用，超时未调用会触发hang api
@@ -185,6 +185,38 @@ direct true dialUserId = hostUserId,false guestUserId
 >
 > 
 
+关于单次通话存在两种计费模式
+1.前x秒使用通话卡，计费模式  用户测不做扣费/主播recv收获对应的通话卡收益(分全额+非全额)
+
+关于ticketByResourceId 封装，free=true，则不进行用户测扣费-对主播收益进行增加
+
+ticketByResourceId(long userId, long provideUserId, String resourceId, boolean free){
+    TradeServer server = get$app_trade_server(provideUserId, resourceId);
+    if (server.mode == EACH){
+        TradeTicket ticket = get$app_trade_ticket(server.id, userId);
+        if(ticket == null) {
+            if (free) { //使用通话卡
+                //扣减通话卡
+                //增加主播通话卡收益
+                insert$app_trade_ticket(serve_id,user_id,ticket_time,done_time); //done_time=System.currentTimeMillis() + server.periodMillis()
+                return;
+            }
+        }
+        if(ticket.doneTime > System.currentTimeMillis()){
+            return;//不扣费 
+        }
+        if(free) {
+            //增加主播通话卡收益
+            insert$app_trade_ticket(serve_id,user_id,ticket_time,done_time); //done_time=System.currentTimeMillis() + server.periodMillis()
+            return;
+        } else {
+            //增加主播收益
+            insert$app_trade_ticket(serve_id,user_id,ticket_time,done_time); //done_time=System.currentTimeMillis() + server.periodMillis()
+            return;
+        }
+    }
+}
+//每次insert$app_trade_ticket完做mq下发，做后续活动等相关捕获处理
 
 
 
