@@ -138,7 +138,7 @@
 
 
 
-### API provider
+### RPC API provider
 ### CallService
 
 播打
@@ -220,6 +220,14 @@ ticketByResourceId(long userId, long provideUserId, String resourceId, boolean f
 }
 //每次insert$app_trade_ticket完做mq下发，做后续活动等相关捕获处理
 
+
+### rest API
+1. /call/dial
+    -校验用户测通话卡|余额是否足够
+``  CallService.dial();
+
+2. /call/idal
+    CallService.idal();
 
 
 
