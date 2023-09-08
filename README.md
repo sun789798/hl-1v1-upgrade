@@ -205,12 +205,14 @@ ticketByResourceId(long userId, long provideUserId, String resourceId, boolean f
         if(ticket.doneTime > System.currentTimeMillis()){
             return;//不扣费 
         }
+        int multiple = (System.currentTimeMillis() - ticket.doneTime) / server.periodMillis()
         if(free) {
-            //增加主播通话卡收益
+            //增加主播通话卡收益 * multiple
             insert$app_trade_ticket(serve_id,user_id,ticket_time,done_time); //done_time=System.currentTimeMillis() + server.periodMillis()
             return;
         } else {
-            //增加主播收益
+            //增加主播收益 * multiple
+            //扣减用户金币 * multiple
             insert$app_trade_ticket(serve_id,user_id,ticket_time,done_time); //done_time=System.currentTimeMillis() + server.periodMillis()
             return;
         }
