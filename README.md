@@ -194,7 +194,7 @@ direct true dialUserId = hostUserId,false guestUserId
 ticketByResourceId(long userId, long provideUserId, String resourceId, boolean free){
     TradeServer server = get$app_trade_server(provideUserId, resourceId);
     if (server.mode == EACH){
-        TradeTicket ticket = get$app_trade_ticket(server.id, userId);
+        TradeTicket ticket = get$app_trade_ticket(server.id, userId) order by ticket_id desc limit 1;
         if(ticket == null) {
             if (free) { //使用通话卡
                 //扣减通话卡
