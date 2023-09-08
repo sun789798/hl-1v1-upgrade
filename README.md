@@ -238,6 +238,7 @@ ticketByResourceId(long userId, long provideUserId, String resourceId, boolean f
 
 
 ### 版本兼容方案
-TODO 
+TODO
+服务端做开关。callId 客户端判断空-则走旧的逻辑流程，非空则走新的逻辑获取rtc-token，待客户端版本覆盖量上来后，服务端做整体切换
 
 
