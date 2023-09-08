@@ -190,6 +190,7 @@ direct true dialUserId = hostUserId,false guestUserId
 
 关于ticketByResourceId 封装，free=true，则不进行用户测扣费-对主播收益进行增加
 
+```
 ticketByResourceId(long userId, long provideUserId, String resourceId, boolean free){
     TradeServer server = get$app_trade_server(provideUserId, resourceId);
     if (server.mode == EACH){
@@ -218,6 +219,8 @@ ticketByResourceId(long userId, long provideUserId, String resourceId, boolean f
         }
     }
 }
+```
+
 //每次insert$app_trade_ticket完做mq下发，做后续活动等相关捕获处理
 
 
