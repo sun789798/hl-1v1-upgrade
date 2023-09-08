@@ -144,20 +144,15 @@
 播打
 1. Call dialWithRtcValue(long hostUserId, long guestUserId, boolean direct, Map<Integer, Long> cmap);
 direct true dialUserId = hostUserId,false guestUserId
-心跳
-2. Call heartbeat(long callId, long userId);
-挂断
-3. Call hang(long callId, long userId);
-更新rtc-value 常用于1v1直播礼物收益/1v1 通话收益更新
-4. void updateCounts(long callId, Map<Integer, Long> indexAndCount); 更新app_rtc_value数据
+2. Call heartbeat(long callId, long userId);心跳
+3. Call hang(long callId, long userId);挂断
+4. void updateCounts(long callId, Map<Integer, Long> indexAndCount); 更新app_rtc_value数据,常用于1v1直播礼物收益/1v1 通话收益更新
 5. void incrCounts(long callId, Map<Integer, Long> indexAndCount); 更新app_rtc_value数据
-心跳扣费
-6. long ticketByResourceId(long userId, long provideUserId, String resourceId, boolean free); 
-计费心跳调用
-7. List<Call> listAll(); 
-接听通话
-8. Call idal(long callId, long userId)
-9. publishServer(long userId, String resourceId(call-${callId}), moduleEnum.CALL, long periodMills, long price)
+6. long ticketByResourceId(long userId, long provideUserId, String resourceId, boolean free); 心跳扣费-计费心跳调用
+7. List<Call> listAll(); 直播中所有列表
+
+8. Call idal(long callId, long userId)接听通话
+9. publishServer(long userId, String resourceId(call-${callId}), moduleEnum.CALL, long periodMills, long price) 发起通话后init当前通话收费情况
 ### 通话流程处理
 
 1. heartbeat api  通话中需根据心跳循环调用，超时未调用会触发hang api
@@ -227,15 +222,22 @@ ticketByResourceId(long userId, long provideUserId, String resourceId, boolean f
 ### rest API
 1. /call/dial
     -校验用户测通话卡|余额是否足够
-``  CallService.dial();
+``  call = CallService.dial(hostuid,guestuid,direct);
+    publishServer(long userId, String resourceId(call-${callId}), moduleEnum.CALL, long periodMills, long price)
 
 2. /call/idal
     CallService.idal();
 
+3. /call/heartbeat 心跳，http/im都可
+
+4. /call/hang    挂断
 
 
+### im改动
+原有通话流程相关 字段新增callId
 
 
->
+### 版本兼容方案
+TODO 
 
 
