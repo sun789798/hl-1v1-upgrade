@@ -228,13 +228,13 @@ ticketByResourceId(long userId, long provideUserId, String resourceId, boolean f
 2. /call/idal
     CallService.idal();
 
-3. /call/heartbeat 心跳，http/im都可
+3. /call/heartbeat 心跳，http/ 如果计费（ticketByResourceId） 失败则直接hang掉通话，结束本场通话
 
 4. /call/hang    挂断
 
 
 ### im改动
-原有通话流程相关 字段新增callId
+原有通话流程相关 字段新增callId 
 
 
 ### 版本兼容方案
